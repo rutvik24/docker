@@ -1,0 +1,40 @@
+version: '3.5'
+
+services:
+  nginx-proxy:
+    image: nginxproxy/nginx-proxy
+    container_name: nginx-proxy
+    restart: always
+    networks:
+      - proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    labels:
+      - "com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy"
+    volumes:
+      - ./certs:/etc/nginx/certs
+      - ./htpasswd:/etc/nginx/htpasswd
+      - ./vhost.d:/etc/nginx/vhost.d
+      - ./html:/usr/share/nginx/html
+      - ./custom.conf:/etc/nginx/conf.d/custom.conf:ro
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+
+  nginx-letsencrypt:
+    image: nginxproxy/acme-companion
+    container_name: nginx-letsencrypt
+    restart: always
+    depends_on:
+      - nginx-proxy
+    networks:
+      - proxy
+    environment:
+      DEFAULT_EMAIL: rutviknabhoya2001@gmail.com
+    volumes:
+      - ./certs:/etc/nginx/certs
+      - ./vhost.d:/etc/nginx/vhost.d
+      - ./html:/usr/share/nginx/html
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+
+networks: { proxy: { name: proxy } }

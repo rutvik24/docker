@@ -1,0 +1,21 @@
+version: "3.5"
+
+services:
+  postgresdb:
+    image: postgres:14.9
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: Admin@123
+      PGDATA: /var/lib/postgresql/data/pgdata
+      VIRTUAL_PORT: 5432
+    volumes:
+      - ./data:/var/lib/postgresql/data
+      # - ./postgres.conf:/etc/postgresql/postgresql.conf
+    ports:
+      - 5432:5432
+    networks:
+      - proxy
+      
+networks:
+  proxy: { external: true }

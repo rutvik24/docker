@@ -1,0 +1,7 @@
+version: '3.5'
+
+services:
+  kalilinux:
+    image: kalilinux/kali-rolling
+    container_name: kali
+    tty: true
