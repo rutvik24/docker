@@ -4,3 +4,4 @@ certs
 /proxy/html
 htpasswd
 vhost.d
+.DS_Store
