@@ -1,4 +1,4 @@
-version: '3.5'
+version: "3.5"
 
 services:
   db:
@@ -13,7 +13,9 @@ services:
       - proxy
     volumes:
       - ./db:/var/lib/mysql
+    ports:
+      - 3306:3306
+      - 33060:33060
 
 networks:
   proxy: { external: true }
-

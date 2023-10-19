@@ -1,0 +1,40 @@
+version: "3.5"
+
+services:
+  authorizer:
+    image: lakhansamani/authorizer
+    ports:
+      - "8081:8080"
+    networks:
+      - proxy
+    environment:
+      - ENV=production
+      - GIN_MODE=release
+      - DATABASE_URL=authorizer:Admin@tcp(db:3306)/authorizer
+      - DATABASE_TYPE=mysql
+      - VIRTUAL_HOST=authorizer.kcservice.in
+      - LETSENCRYPT_HOST=authorizer.kcservice.in
+      - VIRTUAL_PORT=8081
+    depends_on:
+      - db
+    restart: always
+
+  db:
+    image: mysql
+    # NOTE: use of "mysql_native_password" is not recommended: https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password
+    # (this is just an example, not intended to be a production configuration)
+    command: --default-authentication-plugin=caching_sha2_password
+    restart: always
+    environment:
+      MYSQL_USER: authorizer
+      MYSQL_PASSWORD: Admin
+      MYSQL_ROOT_PASSWORD: Admin
+      MYSQL_DATABASE: authorizer
+    networks:
+      - proxy
+    volumes:
+      - ./db:/var/lib/mysql
+
+networks:
+  proxy:
+    external: true
