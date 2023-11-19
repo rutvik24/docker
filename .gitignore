@@ -6,6 +6,6 @@ htpasswd
 vhost.d
 .DS_Store
 src
-./laravel/mysql
-./laravel/custom.conf
-./laravel/html
+/laravel/mysql
+/laravel/custom.conf
+/laravel/html
