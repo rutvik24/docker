@@ -14,22 +14,22 @@ services:
         - UID=${UID:-1000}
         - GID=${GID:-1000}
     ports:
-      - "80:80"
+      - "8081:80"
     volumes:
       - ./src:/var/www/html:delegated
     depends_on:
       - php
       - redis
-      - mysql
+      - db
       - mailhog
     networks:
       - laravel
       - proxy
     environment:
-      VIRTUAL_HOST: dummy.adminer.local
-      LETSENCRYPT_HOST: dummy.adminer.local
+      VIRTUAL_HOST: laravel.local
+      LETSENCRYPT_HOST: laravel.local
 
-  mysql:
+  db:
     image: mysql
     container_name: mysql
     restart: unless-stopped
@@ -44,9 +44,10 @@ services:
       MYSQL_PASSWORD: laravel
       MYSQL_ROOT_PASSWORD: laravel
       SERVICE_TAGS: dev
-      SERVICE_NAME: mysql
+      SERVICE_NAME: db
     networks:
       - laravel
+      - proxy
 
   php:
     build:
@@ -108,7 +109,7 @@ services:
     volumes:
       - ./src:/var/www/html:delegated
     depends_on:
-      - mysql
+      - db
     entrypoint: ["php", "/var/www/html/artisan"]
     networks:
       - laravel
