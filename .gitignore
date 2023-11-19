@@ -9,3 +9,4 @@ src
 /laravel/mysql
 /laravel/custom.conf
 /laravel/html
+/laravel/mailpit

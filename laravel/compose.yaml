@@ -21,7 +21,7 @@ services:
       - php
       - redis
       - db
-      - mailhog
+      - mailpit
     networks:
       - laravel
       - proxy
@@ -114,10 +114,25 @@ services:
     networks:
       - laravel
 
-  mailhog:
-    image: mailhog/mailhog:latest
+  mailpit:
+    image: axllent/mailpit
+    container_name: mailpit
+    restart: always
+    volumes:
+      - ./mailpit:/data
     ports:
-      - "1025:1025"
-      - "8025:8025"
+      - 8025:8025
+      - 1025:1025
+    environment:
+      MP_MAX_MESSAGES: 5000
+      MP_DATA_FILE: /data/mailpit.db
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+      VIRTUAL_HOST: mailpit.local
+      LETSENCRYPT_HOST: mailpit.local
+      VIRTUAL_PORT: 8025
+      MP_UI_AUTH=: "rutvik:Admin@123 admin:Admin@123"
     networks:
       - laravel
+      - proxy
+
