@@ -5,3 +5,7 @@ certs
 htpasswd
 vhost.d
 .DS_Store
+src
+./laravel/mysql
+./laravel/custom.conf
+./laravel/html
