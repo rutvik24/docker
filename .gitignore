@@ -10,3 +10,4 @@ src
 /laravel/custom.conf
 /laravel/html
 /laravel/mailpit
+/mailpit/mailpit
