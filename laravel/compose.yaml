@@ -131,7 +131,8 @@ services:
       VIRTUAL_HOST: mailpit.local
       LETSENCRYPT_HOST: mailpit.local
       VIRTUAL_PORT: 8025
-      MP_UI_AUTH=: "rutvik:Admin@123 admin:Admin@123"
+      MP_UI_AUTH: "rutvik:Admin@123 admin:Admin@123"
+      MP_SMTP_AUTH: "rutvik:Admin@123 admin:Admin@123"
     networks:
       - laravel
       - proxy
