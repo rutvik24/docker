@@ -1,0 +1,16 @@
+# docker-compose.yml
+version: "3.8"
+services:
+  ubuntu:
+    build:
+      args:
+        - UBUNTU_USER=ubuntudemo
+        - UBUNTU_PASSWORD=ubuntudemo
+      context: .
+    ports:
+      - "3391:3390"
+    tty: true
+    stdin_open: true
+    container_name: ubuntu_container
+    restart: unless-stopped
+
