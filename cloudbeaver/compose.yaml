@@ -14,7 +14,7 @@ services:
     environment:
       VIRTUAL_HOST: dummy.adminer.local
       LETSENCRYPT_HOST: dummy.adminer.local
-      VIRTUAL_PORT: 8080
+      VIRTUAL_PORT: 8978
 
 networks:
   proxy:
