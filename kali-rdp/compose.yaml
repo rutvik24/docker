@@ -1,0 +1,16 @@
+# docker-compose.yml
+version: "3.8"
+services:
+  kali:
+    build:
+      args:
+        - KALI_USER=kalidemo
+        - KALI_PASSWORD=kalidemo
+      context: .
+    ports:
+      - "3390:3390"
+    tty: true
+    stdin_open: true
+    container_name: kali_container
+    restart: unless-stopped
+
