@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  dbeaver:
+    image: dbeaver/cloudbeaver:latest
+    container_name: dbeaver
+    ports:
+      - "8080:8978"
+    volumes:
+      - ./db:/opt/cloudbeaver/workspace
+    restart: unless-stopped
+    networks:
+      - proxy
+    environment:
+      VIRTUAL_HOST: dummy.adminer.local
+      LETSENCRYPT_HOST: dummy.adminer.local
+      VIRTUAL_PORT: 8080
+
+networks:
+  proxy:
+    external: true
+
