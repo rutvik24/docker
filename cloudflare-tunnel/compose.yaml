@@ -1,0 +1,14 @@
+version: "3.5"
+
+services:
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    command: tunnel --no-autoupdate run --token ${TOKEN}
+    environment:
+      TOKEN: ${TOKEN}
+    restart: always
+    networks:
+      - proxy
+
+networks:
+  proxy: { external: true }
