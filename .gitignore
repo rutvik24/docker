@@ -11,3 +11,4 @@ src
 /laravel/html
 /laravel/mailpit
 /mailpit/mailpit
+.env
