@@ -13,4 +13,6 @@ services:
     stdin_open: true
     container_name: kali_container
     restart: unless-stopped
-
+    environment:
+      - KALI_USER=kali
+      - KALI_PASSWORD=kaliroot
