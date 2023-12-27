@@ -14,12 +14,12 @@ RUN sudo ./xfce4.sh
 
 EXPOSE 3390
 
-ENV KALI_USER=${KALI_USER}
+ENV KALI_USER_ENV=${KALI_USER}
 
-ENV KALI_PASSWORD=${KALI_PASSWORD}
+ENV KALI_PASSWORD_ENV=${KALI_PASSWORD}
 
 RUN useradd -m $KALI_USER && echo "$KALI_USER:$KALI_PASSWORD" | chpasswd
 
 RUN sudo usermod -aG sudo $KALI_USER
 
-CMD sudo /etc/init.d/xrdp start && bash
+CMD useradd -m $KALI_USER_ENV && echo "$KALI_USER_ENV:$KALI_PASSWORD_ENV" | chpasswd && sudo usermod -aG sudo $KALI_USER_ENV && sudo /etc/init.d/xrdp start && bash
