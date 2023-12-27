@@ -10,7 +10,7 @@ services:
       - internal
     environment:
       - TZ="America/Denver"
-      - DEFAULT_DOMAIN=shlink-db.kcservice.in #no http/https. no trailing slash
+      - DEFAULT_DOMAIN=shlink-db.dummy.domain #no http/https. no trailing slash
       - IS_HTTPS_ENABLED=false
       - GEOLITE_LICENSE_KEY=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 #we'll need to get this key from maxmind.com
       - DB_DRIVER=maria
@@ -18,8 +18,8 @@ services:
       - DB_NAME=shlink
       - DB_PASSWORD=password #change this
       - DB_HOST=database
-      - VIRTUAL_HOST=shlink-db.kcservice.in
-      - LETSENCRYPT_HOST=shlink-db.kcservice.in
+      - VIRTUAL_HOST=shlink-db.dummy.domain
+      - LETSENCRYPT_HOST=shlink-db.dummy.domain
     depends_on:
       - database
     ports:
@@ -50,8 +50,8 @@ services:
     ports:
       - 8080:80
     environment:
-      VIRTUAL_HOST: shlink.kcservice.in
-      LETSENCRYPT_HOST: shlink.kcservice.in
+      VIRTUAL_HOST: shlink.dummy.domain
+      LETSENCRYPT_HOST: shlink.dummy.domain
     networks:
       - internal
       - proxy

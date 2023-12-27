@@ -29,7 +29,7 @@ services:
     networks:
       - proxy
     environment:
-      DEFAULT_EMAIL: rutviknabhoya2001@gmail.com
+      DEFAULT_EMAIL: demo@gmail.com
     volumes:
       - ./certs:/etc/nginx/certs
       - ./vhost.d:/etc/nginx/vhost.d
@@ -37,3 +37,4 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
 networks: { proxy: { name: proxy } }
+

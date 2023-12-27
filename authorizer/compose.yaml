@@ -12,8 +12,8 @@ services:
       - GIN_MODE=release
       - DATABASE_URL=authorizer:Admin@tcp(db:3306)/authorizer
       - DATABASE_TYPE=mysql
-      - VIRTUAL_HOST=authorizer.kcservice.in
-      - LETSENCRYPT_HOST=authorizer.kcservice.in
+      - VIRTUAL_HOST=authorizer.dummy.domain
+      - LETSENCRYPT_HOST=authorizer.dummy.domain
       - VIRTUAL_PORT=8081
     depends_on:
       - db
@@ -27,8 +27,8 @@ services:
     restart: always
     environment:
       MYSQL_USER: authorizer
-      MYSQL_PASSWORD: Admin
-      MYSQL_ROOT_PASSWORD: Admin
+      MYSQL_PASSWORD: _password_
+      MYSQL_ROOT_PASSWORD: _password_
       MYSQL_DATABASE: authorizer
     networks:
       - proxy
