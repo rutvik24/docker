@@ -12,3 +12,7 @@ src
 /laravel/mailpit
 /mailpit/mailpit
 .env
+logs
+extraConfigs
+trainingData
+customFiles

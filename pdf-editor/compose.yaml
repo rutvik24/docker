@@ -1,0 +1,24 @@
+version: "3.8"
+services:
+  stirling-pdf:
+    image: frooodle/s-pdf:latest
+    ports:
+      - "8082:8080"
+    volumes:
+      - ./trainingData:/usr/share/tesseract-ocr/5/tessdata #Required for extra OCR languages
+      - ./extraConfigs:/configs
+      - ./customFiles:/customFiles/
+      - ./logs:/logs/
+    environment:
+      DOCKER_ENABLE_SECURITY: true
+      VIRTUAL_HOST: dummy.adminer.local
+      LETSENCRYPT_HOST: dummy.adminer.local
+      VIRTUAL_PORT: 8082
+#     networks:
+#       - proxy
+
+# networks:
+#   proxy:
+#     external: true
+
+
