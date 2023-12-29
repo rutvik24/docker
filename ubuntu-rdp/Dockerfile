@@ -19,9 +19,9 @@ RUN sed -i.bak '/fi/a #xrdp multiple users configuration \n xfce-session \n' /et
 
 EXPOSE 3390
 
-ENV UBUNTU_USER=${UBUNTU_USER}
+ENV UBUNTU_USER_ENV=${UBUNTU_USER_ENV}
 
-ENV UBUNTU_PASSWORD=${UBUNTU_PASSWORD}
+ENV UBUNTU_PASSWORD_ENV=${UBUNTU_PASSWORD_ENV}
 
 RUN useradd -m $UBUNTU_USER && echo "$UBUNTU_USER:$UBUNTU_PASSWORD" | chpasswd
 
@@ -29,4 +29,4 @@ RUN usermod -aG sudo $UBUNTU_USER
 
 RUN usermod -aG ssl-cert $UBUNTU_USER
 
-CMD /etc/init.d/xrdp start && bash
+CMD useradd -m $UBUNTU_USER_ENV && echo "$UBUNTU_USER_ENV:$UBUNTU_PASSWORD_ENV" | chpasswd && usermod -aG sudo $UBUNTU_USER_ENV && usermod -aG ssl-cert $UBUNTU_USER_ENV && /etc/init.d/xrdp start && bash

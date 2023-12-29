@@ -13,4 +13,7 @@ services:
     stdin_open: true
     container_name: ubuntu_container
     restart: unless-stopped
+    environment:
+      UBUNTU_USER_ENV: ubuntu
+      UBUNTU_PASSWORD_ENV: root
 
