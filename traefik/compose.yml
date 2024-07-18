@@ -1,0 +1,47 @@
+services:
+  traefik:
+    image: traefik:v3.0
+    container_name: traefik
+    restart: always
+    networks:
+      - proxy
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./data/traefik.yml:/traefik.yml:ro
+      - ./data/configs:/configs:ro
+      - ./data/acme.json:/acme.json
+      - ./data/logs:/logs:rw
+    environment:
+      - TZ=Asia/Kolkata
+      - CF_DNS_API_TOKEN=${CFAPI}
+    read_only: true
+    security_opt:
+      - no-new-privileges=true
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.traefik-secure.rule=Host(`proxy.jivilo.com`)
+      - traefik.http.routers.traefik-secure.entrypoints=https
+      - traefik.http.routers.traefik-secure.tls=true
+      - traefik.http.routers.traefik-secure.service=api@internal
+      - traefik.http.routers.traefik-secure.tls.certresolver=staging
+      - traefik.http.routers.traefik-secure.middlewares=traefik-auth
+      - traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIKADMIN}
+      - traefik.http.routers.traefik.rule=Host(`proxy.jivilo.com`)
+      - traefik.http.routers.traefik.entrypoints=http
+      - traefik.http.routers.traefik.middlewares=redirect-to-https
+      - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
+      - traefik.http.middlewares.redirect-to-https.redirectscheme.permanent=true
+      - traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https
+      - traefik.http.routers.traefik-secure.tls.domains[0].main=jivilo.com
+      - traefik.http.routers.traefik-secure.tls.domains[0].sans=*.jivilo.com
+      - traefik.http.services.traefik.loadbalancer.server.port=8080
+
+networks:
+  proxy:
+    name: proxy
+    ipam:
+      config:
+        - subnet: 172.20.0.1/16

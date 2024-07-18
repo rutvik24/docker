@@ -1,0 +1,46 @@
+services:
+  waf:
+    image: owasp/modsecurity-crs:apache
+    container_name: waf
+    environment:
+      PARANOIA: 1
+      ANOMALY_INBOUND: 10
+      ANOMALY_OUTBOUND: 5
+      PROXY: 1
+      REMOTEIP_INT_PROXY: "172.20.0.1/16"
+      BACKEND: "http://vaultwarden:80"
+      BACKEND_WS: "ws://vaultwarden:80/notifications/hub"
+      ERRORLOG: "/var/log/waf/waf.log"
+      PROXY_ERROR_OVERRIDE: "off"
+    volumes:
+      - ./waf:/var/log/waf
+      - /opt/docker/waf-rules/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf:/etc/modsecurity.d/owasp-crs/rules/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf
+      - /opt/docker/waf-rules/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf:/etc/modsecurity.d/owasp-crs/rules/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf
+    labels:
+      - traefik.enable=true
+      - traefik.http.middlewares.redirect-https.redirectScheme.scheme=https
+      - traefik.http.middlewares.redirect-https.redirectScheme.permanent=true
+      - traefik.http.routers.vw-ui-https.rule=Host(`vw.jivilo.com`)
+      - traefik.http.routers.vw-ui-https.entrypoints=https
+      - traefik.http.routers.vw-ui-https.tls=true
+      - traefik.http.routers.vw-ui-https.service=vw-ui
+      - traefik.http.routers.vw-ui-http.rule=Host(`vw.jivilo.com`)
+      - traefik.http.routers.vw-ui-http.entrypoints=web
+      - traefik.http.routers.vw-ui-http.middlewares=redirect-https
+      - traefik.http.routers.vw-ui-http.service=vw-ui
+      - traefik.http.services.vw-ui.loadbalancer.server.port=80
+      - traefik.http.routers.vw-websocket-https.rule=Host(`vw.jivilo.com`) && Path(`/notifications/hub`)
+      - traefik.http.routers.vw-websocket-https.entrypoints=https
+      - traefik.http.routers.vw-websocket-https.tls=true
+      - traefik.http.routers.vw-websocket-https.service=vw-websocket
+      - traefik.http.routers.vw-websocket-http.rule=Host(`vw.jivilo.com`) && Path(`/notifications/hub`)
+      - traefik.http.routers.vw-websocket-http.entrypoints=web
+      - traefik.http.routers.vw-websocket-http.middlewares=redirect-https
+      - traefik.http.routers.vw-websocket-http.service=vw-websocket
+      - traefik.http.services.vw-websocket.loadbalancer.server.port=3012
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
