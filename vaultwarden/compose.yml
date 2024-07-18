@@ -16,16 +16,16 @@ services:
       SMTP_SECURITY: "starttls"
       SMTP_PORT: 587
       SMTP_USERNAME: "api"
-      SMTP_PASSWORD: "1f6af00a07fc90b8bf6966f9c2de96bd"
+      SMTP_PASSWORD: "*****"
       SMTP_TIMEOUT: 15
       LOG_FILE: "/data/vaultwarden.log"
       LOG_LEVEL: "warn"
       EXTENDED_LOGGING: "true"
       TZ: "Asia/Kolkata"
       PUSH_ENABLED: true
-      PUSH_INSTALLATION_ID: "b8a0e3e4-d72f-4528-8a0e-b1a800b9ec2a"
-      PUSH_INSTALLATION_KEY: "3vOC6zAeQoN8lkEGyjtO"
-      DATABASE_URL: "postgresql://bitwarden:Bitwarden98256@db:5432/bitwarden"
+      PUSH_INSTALLATION_ID: "********"
+      PUSH_INSTALLATION_KEY: "*****"
+      DATABASE_URL: "****"
     labels:
       - traefik.enable=true
       - traefik.http.routers.vaultwarden-https.rule=Host(`vaultwarden.jivilo.com`)
