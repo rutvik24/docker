@@ -1,0 +1,94 @@
+api:
+  dashboard: true
+
+entryPoints:
+  http:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: https
+          scheme: https
+    forwardedHeaders:
+      trustedIPs:
+        - 127.0.0.1/32
+        - 192.168.0.0/16
+        - 172.16.0.0/12
+  https:
+    address: ":443"
+    http:
+      tls: {}
+    forwardedHeaders:
+      trustedIPs:
+        - 127.0.0.1/32
+        - 192.168.0.0/16
+        - 172.16.0.0/12
+
+providers:
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false
+    defaultRule: 'Host(`{{ index .Labels "com.docker.compose.service"}}.jivilo.com`)'
+    network: proxy
+  file:
+    directory: "/configs"
+    watch: true
+
+certificatesResolvers:
+  http:
+    acme:
+      email: rutviknabhoya2001@gmail.com
+      storage: /acme.json
+      httpChallenge:
+        entryPoint: http
+  staging:
+    acme:
+      email: rutviknabhoya2001@gmail.com
+      storage: acme.json
+      caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
+      # httpChallenge:
+      #   entryPoint: https
+      dnsChallenge:
+        provider: cloudflare
+        resolvers:
+          - "1.1.1.1:53"
+          - "1.0.0.1:53"
+  letsencrypt:
+    acme:
+      email: rutviknabhoya2001@gmail.com
+      storage: acme.json
+      caServer: https://acme-v02.api.letsencrypt.org/directory
+      # httpChallenge:
+      #   entryPoint: http
+      dnsChallenge:
+        provider: cloudflare
+        resolvers:
+          - "1.1.1.1:53"
+          - "1.0.0.1:53"
+  # zerossl:
+  #   acme:
+  #     caServer: https://acme.zerossl.com/v2/DV90
+  #     email: rutviknabhoya2001@gmail.com
+  #     storage: /acme.json
+  #     dnsChallenge:
+  #       provider: cloudflare
+  #       resolvers:
+  #         - "1.1.1.1:53"
+  #         - "1.0.0.1:53"
+  #     eab:
+  #       kid: sdjkflUHKer79HLK
+  #       hmacEncoded: sjflkJLHeh5JHfdGUIGEJ8ASdyouhj43
+
+serversTransport:
+  insecureSkipVerify: true
+
+accessLog:
+  filePath: "/logs/access.log"
+  fields:
+    headers:
+      names:
+        User-Agent: keep
+
+log:
+  filePath: "/logs/traefik.log"
+  level: INFO

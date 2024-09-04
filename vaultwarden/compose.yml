@@ -1,0 +1,49 @@
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    restart: unless-stopped
+    environment:
+      WEBSOCKET_ENABLED: "true"
+      SENDS_ALLOWED: "true"
+      PASSWORD_ITERATIONS: 500000
+      SIGNUPS_ALLOWED: "false"
+      ADMIN_TOKEN: ${VAULTWARDEN_ADMIN_TOKEN} #generate with openssl rand
+      DOMAIN: "vaultwarden.jivilo.com"
+      SMTP_HOST: "live.smtp.mailtrap.io"
+      SMTP_FROM: "no-reply@jivilo.com"
+      SMTP_FROM_NAME: "vaultwarden"
+      SMTP_SECURITY: "starttls"
+      SMTP_PORT: 587
+      SMTP_USERNAME: "api"
+      SMTP_PASSWORD: "*****"
+      SMTP_TIMEOUT: 15
+      LOG_FILE: "/data/vaultwarden.log"
+      LOG_LEVEL: "warn"
+      EXTENDED_LOGGING: "true"
+      TZ: "Asia/Kolkata"
+      PUSH_ENABLED: true
+      PUSH_INSTALLATION_ID: "********"
+      PUSH_INSTALLATION_KEY: "*****"
+      DATABASE_URL: "****"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.vaultwarden-https.rule=Host(`vaultwarden.jivilo.com`)
+      - traefik.http.routers.vaultwarden-https.entrypoints=https
+      - traefik.http.routers.vaultwarden-https.tls=true
+      - traefik.http.routers.vaultwarden-https.service=vaultwarden
+      - traefik.http.routers.vaultwarden-http.rule=Host(`vaultwarden.jivilo.com`)
+      - traefik.http.routers.vaultwarden-http.entrypoints=http
+      - traefik.http.routers.vaultwarden-http.middlewares=redirect-https
+      - traefik.http.middlewares.redirect-https.redirectscheme.scheme=https
+      - traefik.http.middlewares.redirect-https.redirectscheme.permanent=true
+      - traefik.http.routers.vaultwarden-http.service=vaultwarden
+      - traefik.http.services.vaultwarden.loadbalancer.server.port=80
+    volumes:
+      - ./vaultwarden:/data
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
