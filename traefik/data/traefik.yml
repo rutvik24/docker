@@ -46,25 +46,25 @@ certificatesResolvers:
       email: rutviknabhoya2001@gmail.com
       storage: acme.json
       caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
-      # httpChallenge:
-      #   entryPoint: https
-      dnsChallenge:
-        provider: cloudflare
-        resolvers:
-          - "1.1.1.1:53"
-          - "1.0.0.1:53"
+      httpChallenge:
+        entryPoint: https
+      # dnsChallenge:
+      #   provider: cloudflare
+      #   resolvers:
+      #     - "1.1.1.1:53"
+      #     - "1.0.0.1:53"
   letsencrypt:
     acme:
       email: rutviknabhoya2001@gmail.com
       storage: acme.json
       caServer: https://acme-v02.api.letsencrypt.org/directory
-      # httpChallenge:
-      #   entryPoint: http
-      dnsChallenge:
-        provider: cloudflare
-        resolvers:
-          - "1.1.1.1:53"
-          - "1.0.0.1:53"
+      httpChallenge:
+        entryPoint: http
+      # dnsChallenge:
+      #   provider: cloudflare
+      #   resolvers:
+      #     - "1.1.1.1:53"
+      #     - "1.0.0.1:53"
   # zerossl:
   #   acme:
   #     caServer: https://acme.zerossl.com/v2/DV90
@@ -92,3 +92,4 @@ accessLog:
 log:
   filePath: "/logs/traefik.log"
   level: INFO
+

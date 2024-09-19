@@ -1,0 +1,21 @@
+name: caddy-compose-proxy
+
+services:
+  caddy:
+    image: caddy:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./caddy_data:/data
+      - ./caddy_config:/config
+    networks:
+      - proxy
+    cap_add:
+      - NET_ADMIN
+
+networks:
+  proxy:
+    name: proxy
+

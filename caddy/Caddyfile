@@ -1,0 +1,7 @@
+{
+    email caddy-test@atliq.com
+}
+
+dummy.adminer.local {
+    reverse_proxy adminer:8080
+}

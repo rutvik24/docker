@@ -16,3 +16,5 @@ logs
 extraConfigs
 trainingData
 customFiles
+caddy_*
+!traefik/data
