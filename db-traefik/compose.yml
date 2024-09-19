@@ -1,0 +1,39 @@
+name: db-traefik
+
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: Admin@123
+      PGDATA: /var/lib/postgresql/data/pgdata
+      VIRTUAL_PORT: 5432
+    volumes:
+      - ./data:/var/lib/postgresql/data
+      # - ./postgres.conf:/etc/postgresql/postgresql.conf
+    ports:
+      - 5432:5432
+    networks:
+      - proxy
+
+  adminer:
+    image: adminer
+    restart: always
+    networks:
+      - proxy
+    depends_on:
+      - db
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.adminer-secure.rule=Host(`adminer.jivilo.com`)
+      - traefik.http.routers.adminer-secure.entrypoints=https
+      - traefik.http.routers.adminer-secure.tls=true
+      - traefik.http.routers.adminer-secure.service=adminer
+      - traefik.http.services.adminer.loadbalancer.server.port=8080
+      - traefik.http.routers.adminer-secure.tls.certresolver=staging
+
+networks:
+  proxy:
+    external: true
+
