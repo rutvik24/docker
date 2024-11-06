@@ -4,8 +4,8 @@ services:
   adminer:
     image: adminer
     restart: always
-    # ports:
-    #   - 8080:8080
+    ports:
+      - 8081:8080
     networks:
       - proxy
     # environment:
@@ -13,9 +13,9 @@ services:
     # LETSENCRYPT_HOST: dummy.adminer.local
     # VIRTUAL_PORT: 8080
     # ADMINER_DESIGN: 'pepa-linha-dark'
-    labels:
-      caddy: "dummy.adminer.local"
-      caddy.reverse_proxy: "{{upstreams 8080}}"
+    # labels:
+    #   caddy: "dummy.adminer.local"
+    #   caddy.reverse_proxy: "{{upstreams 8080}}"
 
 networks:
   proxy: { external: true }

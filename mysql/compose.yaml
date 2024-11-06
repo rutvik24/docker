@@ -8,7 +8,8 @@ services:
     # command: --default-authentication-plugin=caching_sha2_password
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: Admin@123
+      MYSQL_ROOT_PASSWORD: Admin
+      MYSQL_DATABASE: test
     networks:
       - proxy
     volumes:
@@ -16,6 +17,5 @@ services:
     ports:
       - 3306:3306
       - 33060:33060
-
 networks:
   proxy: { external: true }
