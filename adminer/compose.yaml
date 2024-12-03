@@ -2,10 +2,13 @@ version: "3.5"
 
 services:
   adminer:
-    image: adminer
+    # image: adminer
+    build:
+      context: .
+      dockerfile: Dockerfile
     restart: always
     ports:
-      - 8081:8080
+      - 8086:8080
     networks:
       - proxy
     # environment:

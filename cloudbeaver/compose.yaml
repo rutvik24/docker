@@ -5,7 +5,7 @@ services:
     image: dbeaver/cloudbeaver:latest
     container_name: dbeaver
     ports:
-      - "8080:8978"
+      - "8087:8978"
     volumes:
       - ./db:/opt/cloudbeaver/workspace
     restart: unless-stopped
