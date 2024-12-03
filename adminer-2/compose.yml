@@ -11,6 +11,7 @@ services:
       - traefik.http.routers.adminer-secure.tls=true
       - traefik.http.routers.adminer-secure.service=adminer
       - traefik.http.services.adminer.loadbalancer.server.port=8080
+      - traefik.http.routers.adminer-secure.tls.certresolver=letsencrypt
 
 networks:
   proxy:
