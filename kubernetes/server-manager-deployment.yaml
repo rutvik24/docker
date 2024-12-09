@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-server-manager
+  labels:
+    app: go-server-manager
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: go-server-manager
+  template:
+    metadata:
+      name: go-server-manager
+      labels:
+        app: go-server-manager
+    spec:
+      hostname: server
+      containers:
+        - name: go-server-manager
+          image: my-server-manager
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          env:
+            - name: "DB_HOST"
+              value: "go-server-manager-service"
+#              valueFrom:
+#                fieldRef:
+#                  fieldPath: status.podIP
+            - name: "DB_DRIVER"
+              value: "postgres"
+            - name: "DB_USER"
+              value: "user"
+            - name: "DB_PASSWORD"
+              value: "Admin@123"
+            - name: "DB_NAME"
+              value: "server_manager_development"
+            - name: "DB_PORT"
+              value: "5432"
+            - name: "ENV"
+              value: "DEV"
+            - name: "SERVER_PORT"
+              value: "3000"
+        - name: postgres-db
+          image: postgres
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5432
+              protocol: TCP
+          env:
+            - name: "POSTGRES_USER"
+              value: "user"
+            - name: "POSTGRES_PASSWORD"
+              value: "Admin@123"
+            - name: "POSTGRES_DB"
+              value: "server_manager_development"
+        - name: adminer
+          image: adminer
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+      restartPolicy: Always
