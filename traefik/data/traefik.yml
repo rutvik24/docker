@@ -29,8 +29,8 @@ providers:
   docker:
     endpoint: "unix:///var/run/docker.sock"
     exposedByDefault: false
-    defaultRule: 'Host(`{{ index .Labels "com.docker.compose.service"}}.jivilo.com`)'
-    network: proxy
+    defaultRule: 'Host(`{{ index .Labels "com.docker.compose.service"}}.wellness.atliq.ai`)'
+    network: wellness-network
   file:
     directory: "/configs"
     watch: true
@@ -38,13 +38,13 @@ providers:
 certificatesResolvers:
   http:
     acme:
-      email: rutviknabhoya2001@gmail.com
+      email: rutvik@atliq.com
       storage: /acme.json
       httpChallenge:
         entryPoint: http
   staging:
     acme:
-      email: rutviknabhoya2001@gmail.com
+      email: rutvik@atliq.com
       storage: acme.json
       caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
       httpChallenge:
@@ -56,7 +56,7 @@ certificatesResolvers:
       #     - "1.0.0.1:53"
   letsencrypt:
     acme:
-      email: rutviknabhoya2001@gmail.com
+      email: rutvik@atliq.com
       storage: acme.json
       caServer: https://acme-v02.api.letsencrypt.org/directory
       httpChallenge:
@@ -69,7 +69,7 @@ certificatesResolvers:
   # zerossl:
   #   acme:
   #     caServer: https://acme.zerossl.com/v2/DV90
-  #     email: rutviknabhoya2001@gmail.com
+  #     email: rutvik@atliq.com
   #     storage: /acme.json
   #     dnsChallenge:
   #       provider: cloudflare

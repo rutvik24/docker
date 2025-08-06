@@ -4,7 +4,7 @@ services:
     container_name: traefik
     restart: always
     networks:
-      - proxy
+      - wellness-network
     ports:
       - 80:80
       - 443:443
@@ -22,26 +22,26 @@ services:
       - no-new-privileges=true
     labels:
       - traefik.enable=true
-      - traefik.http.routers.traefik-secure.rule=Host(`traefik.jivilo.com`)
+      - traefik.http.routers.traefik-secure.rule=Host(`traefik.wellness.atliq.ai`)
       - traefik.http.routers.traefik-secure.entrypoints=https
       - traefik.http.routers.traefik-secure.tls=true
       - traefik.http.routers.traefik-secure.service=api@internal
       - traefik.http.routers.traefik-secure.tls.certresolver=letsencrypt
       - traefik.http.routers.traefik-secure.middlewares=traefik-auth
       - traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIKADMIN}
-      - traefik.http.routers.traefik.rule=Host(`traefik.jivilo.com`)
+      - traefik.http.routers.traefik.rule=Host(`traefik.wellness.atliq.ai`)
       - traefik.http.routers.traefik.entrypoints=http
       - traefik.http.routers.traefik.middlewares=redirect-to-https
       - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
       - traefik.http.middlewares.redirect-to-https.redirectscheme.permanent=true
       - traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https
-      # - traefik.http.routers.traefik-secure.tls.domains[0].main=jivilo.com
-      # - traefik.http.routers.traefik-secure.tls.domains[0].sans=*.jivilo.com
+      # - traefik.http.routers.traefik-secure.tls.domains[0].main=wellness.atliq.ai
+      # - traefik.http.routers.traefik-secure.tls.domains[0].sans=*.wellness.atliq.ai
       - traefik.http.services.traefik.loadbalancer.server.port=8080
 
 networks:
-  proxy:
-    name: proxy
+  wellness-network:
+    name: wellness-network
     ipam:
       config:
         - subnet: 172.20.0.0/16
