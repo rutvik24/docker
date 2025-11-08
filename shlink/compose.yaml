@@ -12,7 +12,7 @@ services:
       - TZ="America/Denver"
       - DEFAULT_DOMAIN=shlink-db.dummy.domain #no http/https. no trailing slash
       - IS_HTTPS_ENABLED=false
-      - GEOLITE_LICENSE_KEY=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 #we'll need to get this key from maxmind.com
+      - GEOLITE_LICENSE_KEY=***** #we'll need to get this key from maxmind.com
       - DB_DRIVER=maria
       - DB_USER=shlink
       - DB_NAME=shlink
