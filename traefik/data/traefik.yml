@@ -29,8 +29,8 @@ providers:
   docker:
     endpoint: "unix:///var/run/docker.sock"
     exposedByDefault: false
-    defaultRule: 'Host(`{{ index .Labels "com.docker.compose.service"}}.wellness.atliq.ai`)'
-    network: wellness-network
+    defaultRule: 'Host(`{{ index .Labels "com.docker.compose.service"}}.local.rutvik.qzz.io`)'
+    network: proxy
   file:
     directory: "/configs"
     watch: true
