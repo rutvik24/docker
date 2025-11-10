@@ -4,7 +4,7 @@ services:
     container_name: traefik
     restart: always
     networks:
-      - wellness-network
+      - proxy
     ports:
       - 80:80
       - 443:443
@@ -12,21 +12,21 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./data/traefik.yml:/traefik.yml:ro
       - ./data/configs:/configs:ro
-      - ./data/acme.json:/acme.json
+      - ./certs/acme.json:/acme.json
       - ./data/logs:/logs:rw
     environment:
       - TZ=Asia/Kolkata
-      # - CF_DNS_API_TOKEN=${CFAPI}
+      - CF_DNS_API_TOKEN=${CFAPI}
     read_only: true
     security_opt:
       - no-new-privileges=true
     labels:
       - traefik.enable=true
-      - traefik.http.routers.traefik-secure.rule=Host(`traefik.wellness.atliq.ai`)
+      - traefik.http.routers.traefik-secure.rule=Host(`traefik.local.rutvik.qzz.io`)
       - traefik.http.routers.traefik-secure.entrypoints=https
       - traefik.http.routers.traefik-secure.tls=true
       - traefik.http.routers.traefik-secure.service=api@internal
-      - traefik.http.routers.traefik-secure.tls.certresolver=letsencrypt
+      - traefik.http.routers.traefik-secure.tls.certresolver=cloudflare
       - traefik.http.routers.traefik-secure.middlewares=traefik-auth
       - traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIKADMIN}
       - traefik.http.routers.traefik.rule=Host(`traefik.wellness.atliq.ai`)
@@ -40,9 +40,8 @@ services:
       - traefik.http.services.traefik.loadbalancer.server.port=8080
 
 networks:
-  wellness-network:
-    name: wellness-network
+  proxy:
+    name: proxy
     ipam:
       config:
         - subnet: 172.20.0.0/16
-
