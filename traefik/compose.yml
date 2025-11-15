@@ -29,9 +29,10 @@ services:
       - traefik.http.routers.traefik-secure.tls.certresolver=cloudflare
       - traefik.http.routers.traefik-secure.middlewares=traefik-auth
       - traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIKADMIN}
-      - traefik.http.routers.traefik.rule=Host(`traefik.wellness.atliq.ai`)
-      - traefik.http.routers.traefik.entrypoints=http
-      - traefik.http.routers.traefik.middlewares=redirect-to-https
+      # enable dashboard on http with redirection to https generally not needed
+      # - traefik.http.routers.traefik.rule=Host(`traefik.wellness.atliq.ai`)
+      # - traefik.http.routers.traefik.entrypoints=http
+      # - traefik.http.routers.traefik.middlewares=redirect-to-https
       - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
       - traefik.http.middlewares.redirect-to-https.redirectscheme.permanent=true
       - traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https
