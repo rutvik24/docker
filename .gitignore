@@ -18,3 +18,4 @@ trainingData
 customFiles
 caddy_*
 !traefik/data
+node_modules
