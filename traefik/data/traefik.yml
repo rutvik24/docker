@@ -29,24 +29,18 @@ providers:
   docker:
     endpoint: "unix:///var/run/docker.sock"
     exposedByDefault: false
-    defaultRule: 'Host(`{{ index .Labels "com.docker.compose.service"}}.wellness.atliq.ai`)'
-    network: wellness-network
+    defaultRule: 'Host(`{{ index .Labels "com.docker.compose.service"}}.local.rutvik.qzz.io`)'
+    network: proxy
   file:
     directory: "/configs"
     watch: true
 
 certificatesResolvers:
-  http:
-    acme:
-      email: rutvik@atliq.com
-      storage: /acme.json
-      httpChallenge:
-        entryPoint: http
   staging:
     acme:
       email: rutvik@atliq.com
-      storage: acme.json
-      caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
+      storage: /acme.json
+      caServer: https://acme-staging-v02.api.letsencrypt.org/directory
       httpChallenge:
         entryPoint: https
       # dnsChallenge:
@@ -57,7 +51,7 @@ certificatesResolvers:
   letsencrypt:
     acme:
       email: rutvik@atliq.com
-      storage: acme.json
+      storage: /acme.json
       caServer: https://acme-v02.api.letsencrypt.org/directory
       httpChallenge:
         entryPoint: http
@@ -66,6 +60,26 @@ certificatesResolvers:
       #   resolvers:
       #     - "1.1.1.1:53"
       #     - "1.0.0.1:53"
+  cloudflare-staging:
+    acme:
+      email: rutvik@atliq.com
+      storage: /acme.json
+      caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+      dnsChallenge:
+        provider: cloudflare
+        resolvers:
+          - "1.1.1.1:53"
+          - "1.0.0.1:53"
+  cloudflare:
+    acme:
+      email: rutvik@atliq.com
+      storage: /acme.json
+      caServer: https://acme-v02.api.letsencrypt.org/directory
+      dnsChallenge:
+        provider: cloudflare
+        resolvers:
+          - "1.1.1.1:53"
+          - "1.0.0.1:53"
   # zerossl:
   #   acme:
   #     caServer: https://acme.zerossl.com/v2/DV90

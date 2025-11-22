@@ -4,7 +4,7 @@ services:
     container_name: traefik
     restart: always
     networks:
-      - wellness-network
+      - proxy
     ports:
       - 80:80
       - 443:443
@@ -12,26 +12,27 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./data/traefik.yml:/traefik.yml:ro
       - ./data/configs:/configs:ro
-      - ./data/acme.json:/acme.json
+      - ./certs/acme.json:/acme.json
       - ./data/logs:/logs:rw
     environment:
       - TZ=Asia/Kolkata
-      # - CF_DNS_API_TOKEN=${CFAPI}
+      - CF_DNS_API_TOKEN=${CFAPI}
     read_only: true
     security_opt:
       - no-new-privileges=true
     labels:
       - traefik.enable=true
-      - traefik.http.routers.traefik-secure.rule=Host(`traefik.wellness.atliq.ai`)
+      - traefik.http.routers.traefik-secure.rule=Host(`traefik.local.rutvik.qzz.io`)
       - traefik.http.routers.traefik-secure.entrypoints=https
       - traefik.http.routers.traefik-secure.tls=true
       - traefik.http.routers.traefik-secure.service=api@internal
-      - traefik.http.routers.traefik-secure.tls.certresolver=letsencrypt
+      - traefik.http.routers.traefik-secure.tls.certresolver=cloudflare
       - traefik.http.routers.traefik-secure.middlewares=traefik-auth
       - traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIKADMIN}
-      - traefik.http.routers.traefik.rule=Host(`traefik.wellness.atliq.ai`)
-      - traefik.http.routers.traefik.entrypoints=http
-      - traefik.http.routers.traefik.middlewares=redirect-to-https
+      # enable dashboard on http with redirection to https generally not needed
+      # - traefik.http.routers.traefik.rule=Host(`traefik.wellness.atliq.ai`)
+      # - traefik.http.routers.traefik.entrypoints=http
+      # - traefik.http.routers.traefik.middlewares=redirect-to-https
       - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
       - traefik.http.middlewares.redirect-to-https.redirectscheme.permanent=true
       - traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https
@@ -40,9 +41,8 @@ services:
       - traefik.http.services.traefik.loadbalancer.server.port=8080
 
 networks:
-  wellness-network:
-    name: wellness-network
+  proxy:
+    name: proxy
     ipam:
       config:
         - subnet: 172.20.0.0/16
-

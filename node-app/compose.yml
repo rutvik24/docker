@@ -1,0 +1,20 @@
+services:
+  node-app:
+    build: .
+    networks:
+      - proxy
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.node-app-secure.rule=Host(`node.local.rutvik.qzz.io`) && PathPrefix(`/api/v1`)
+      - traefik.http.routers.node-app-secure.entrypoints=https
+      - traefik.http.routers.node-app-secure.tls=true
+      - traefik.http.routers.node-app-secure.service=node-app
+      - traefik.http.services.node-app.loadbalancer.server.port=3000
+      - traefik.http.routers.node-app-secure.tls.certresolver=cloudflare
+      # node-app-secure-stripprefix is a middleware name need to be defined with middlewares labels
+      - traefik.http.middlewares.node-app-secure-stripprefix.stripprefix.prefixes=/api/v1
+      - traefik.http.routers.node-app-secure.middlewares=node-app-secure-stripprefix
+
+networks:
+  proxy:
+    external: true
