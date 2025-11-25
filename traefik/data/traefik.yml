@@ -10,6 +10,13 @@ entryPoints:
         entryPoint:
           to: https
           scheme: https
+    # config for timeouts and graceful shutdown
+    transport:
+      respondingTimeouts:
+        readTimeout: 300s
+        idleTimeout: 300s
+      lifeCycle:
+        graceTimeOut: 30s
     forwardedHeaders:
       trustedIPs:
         - 127.0.0.1/32
@@ -19,6 +26,13 @@ entryPoints:
     address: ":443"
     http:
       tls: {}
+    # config for timeouts and graceful shutdown
+    transport:
+      respondingTimeouts:
+        readTimeout: 300s
+        idleTimeout: 300s
+      lifeCycle:
+        graceTimeOut: 30s
     forwardedHeaders:
       trustedIPs:
         - 127.0.0.1/32
