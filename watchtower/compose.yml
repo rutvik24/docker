@@ -12,3 +12,11 @@ services:
     command: --debug --cleanup
     labels:
       - "com.centurylinklabs.watchtower.enable=false"
+# multiline comment
+# if watchtower fails to start because of docker version issues,
+# systemctl edit docker.service
+# add the following lines:
+# [Service]
+# Environment=DOCKER_MIN_API_VERSION=1.24
+# then restart docker
+# systemctl restart docker
