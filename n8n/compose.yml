@@ -35,7 +35,9 @@ services:
       - traefik.http.middlewares.n8n.headers.SSLHost=${DOMAIN_NAME}
       - traefik.http.middlewares.n8n.headers.STSIncludeSubdomains=true
       - traefik.http.middlewares.n8n.headers.STSPreload=true
+    restart: unless-stopped
 
 networks:
   proxy:
     external: true
+
