@@ -100,4 +100,4 @@ Manifests under `kubernetes/` are examples (deployment, service, ingress). They 
 
 ## License
 
-No license file is included by default. Add one if you intend to share or reuse this repo publicly.
+This project is licensed under the [MIT License](LICENSE).
