@@ -11,10 +11,14 @@ services:
     restart: unless-stopped
     networks:
       - proxy
-    environment:
-      VIRTUAL_HOST: dummy.adminer.local
-      LETSENCRYPT_HOST: dummy.adminer.local
-      VIRTUAL_PORT: 8978
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.dbeaver-secure.rule=Host(`cloudbeaver.local.rutvik.qzz.io`)
+      - traefik.http.routers.dbeaver-secure.entrypoints=https
+      - traefik.http.routers.dbeaver-secure.tls=true
+      - traefik.http.routers.dbeaver-secure.service=dbeaver
+      - traefik.http.services.dbeaver.loadbalancer.server.port=8978
+      - traefik.http.routers.dbeaver-secure.tls.certresolver=cloudflare
 
 networks:
   proxy:

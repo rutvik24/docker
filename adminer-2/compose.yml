@@ -6,12 +6,12 @@ services:
       - proxy
     labels:
       - traefik.enable=true
-      - traefik.http.routers.adminer-secure.rule=Host(`adminer.jivilo.com`)
+      - traefik.http.routers.adminer-secure.rule=Host(`adminer.local.rutvik.qzz.io`)
       - traefik.http.routers.adminer-secure.entrypoints=https
       - traefik.http.routers.adminer-secure.tls=true
       - traefik.http.routers.adminer-secure.service=adminer
       - traefik.http.services.adminer.loadbalancer.server.port=8080
-      - traefik.http.routers.adminer-secure.tls.certresolver=letsencrypt
+      - traefik.http.routers.adminer-secure.tls.certresolver=cloudflare
 
 networks:
   proxy:
