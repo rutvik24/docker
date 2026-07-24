@@ -7,6 +7,11 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - proxy
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        sed -i 's/container\.Ports\.map/(container.Ports ?? []).map/g' /app/dist/docker/graph.js
+        exec node dist/cli.js up --no-open
     labels:
       - traefik.enable=true
       - traefik.http.routers.dockscope-secure.rule=Host(`dockscope.local.rutvik.qzz.io`)
