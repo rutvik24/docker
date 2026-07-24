@@ -56,6 +56,7 @@ flowchart LR
 | `qdrant/` | Vector database |
 | `pi-hole/` | DNS ad-blocking |
 | `watchtower/` | Automatic container image updates |
+| `dockscope/` | Visual Docker dashboard (3D graph, metrics, logs, terminal) |
 | `pdf-editor/` | PDF tooling stack |
 | `authorizer/` | Auth-related service |
 | `kali/`, `kali-rdp/`, `ubuntu-rdp/` | Desktop / security lab containers (RDP) |

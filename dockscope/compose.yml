@@ -1,0 +1,23 @@
+services:
+  dockscope:
+    image: ghcr.io/manuelr-t/dockscope:latest
+    container_name: dockscope
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - proxy
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.dockscope-secure.rule=Host(`dockscope.local.rutvik.qzz.io`)
+      - traefik.http.routers.dockscope-secure.entrypoints=https
+      - traefik.http.routers.dockscope-secure.tls=true
+      - traefik.http.routers.dockscope-secure.service=dockscope
+      - traefik.http.services.dockscope.loadbalancer.server.port=4681
+      - traefik.http.routers.dockscope-secure.tls.certresolver=cloudflare
+    ports:
+      - 4681:4681
+
+networks:
+  proxy:
+    external: true
